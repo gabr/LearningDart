@@ -92,6 +92,14 @@
 
 */
 
+void foo() {}
+
+class A {
+  static void bar() {}
+  void baz() {}
+}
+
+
 // komentarz
 // każdy program musi mieć main()
 // main zwraca void i może przyjmować opcjonalne List<String> z arumentami
@@ -109,7 +117,7 @@ main(args) {
   int n;
   // żeby assert rzucał wyjątek trzeba go włączyć argumentem --enable-asserts
   // i ten argument musi być podany przed nazwą pliku
-  assert(n == null);
+  assert(n == null, "Assert może mieć wiadomość jak się nie powiedzie");
 
 
   // Różnica między final a const jest tak, że do final można zapisać
@@ -360,13 +368,94 @@ main(args) {
 
   // funckeje anonimowe (params) { body }
   // podobne do arrow functions (params) => expression
-  ['apples', 'bananas', 'oranges'].forEach((fruit) {
-    print('eating $fruit');
-  });
+  ['apples', 'bananas', 'oranges']
+    ..forEach((fruit) { print('eating $fruit'); })
+    ..forEach((fruit) => print('eating $fruit') );
 
 
+  var x;
+
+  // Comparing top-level functions.
+  x = foo;
+  assert(foo == x);
+
+  // Comparing static methods.
+  x = A.bar;
+  assert(A.bar == x);
+
+  // Comparing instance methods.
+  var v = A(); // Instance #1 of A
+  var w = A(); // Instance #2 of A
+  var y = w;
+  x = w.baz;
+
+  // These closures refer to the same instance (#2),
+  // so they're equal.
+  assert(y.baz == x);
+
+  // These closures refer to different instances,
+  // so they're unequal.
+  assert(v.baz != w.baz);
+
+
+  // wygląda na to że mamy tutaj operator Elwisa ?. oraz operator ??
+  var someNullText = null;
+  // bez znaku zapytania dostaniemy tutaj wyjątek
+  print('someNullText: ${someNullText?.toUpperCase() ?? "jest nullem"}');
+
+
+  // można sprawdzać typ danej zmiennej za pomocą słowa kluczowego is
+  assert("bla" is String);
+  // mamy też rzutowanie as i zanegowane is poprzez wykrzyknik is!
+  assert("bla" is! int);
+  // is jest automatycznie używany jako as w sytuacji użycia w warunku
+  // i nie trzeba wtedy ręcznie rzutować ani używać as dodatkowo
+  var someVariable = "test";
+  // UWAGA to nie sprawdza czy zmienna jest nullem
+  if (someVariable is String) {
+    print(someVariable.toUpperCase());
+  }
+
+  // oprócz zwykłych operatorów matematyczny jest jeden ciekawy ~/
+  // dzieli ale zwraca inta
+  assert((10 ~/ 3) == 3);
+
+  // kontrola przepływu
+  // tutaj standard: if, else, else if, for, while, do-while, break, continue,
+  // switch, case, assert, try-catch, throw
   for (int i = 0; i < 5; i++) {
     print('hello ${i + 1}');
   }
+  for (var i in [1, 2, 3]) {
+    print(i);
+  }
+
+  ['Test', 'Case', 'For', 'Array', 'Methods']
+    .where((s) => s.isNotEmpty)
+    .where((s) => s.contains('a'))
+    .forEach((s) => print(s));
+
+  // switch i case mają taką samą składnię jak c#, ale dodatkowo
+  // można skakać do etykiet używając continue
+  const switchCommand = 'CLOSED';
+  switch (switchCommand) {
+    case 'bla':
+      print('bla');
+      break;
+
+    jumpHere:
+    case 'foo':
+      print('foo');
+      break;
+
+    case 'CLOSED':
+    case 'NOW_CLOSED':
+      print('is closed');
+      continue jumpHere;
+
+    default:
+      print('unknown state');
+  }
+
 }
 

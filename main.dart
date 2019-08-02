@@ -224,6 +224,26 @@ main() {
   // operatory trzech kropek nie są wspierane w zmiennych
   // typu const, ale działają z final
 
+  // od Dart 2.3 można również wewnątrz listy używać konstrukcji if i for
+  var ifInList = [
+    'First',
+    'Second',
+    if (1 == 1) 'Thrid'
+  ];
+
+  var fromOneToTen = [for (var i = 1; i <= 10; i++) i];
+  var stringsList = [
+    'start',
+    for (var i in fromOneToTen) 'number $i',
+    'end'
+  ];
+  assert(stringsList.length == 12);
+
+  // więce na: https://github.com/dart-lang/language/blob/master/accepted/2.3/control-flow-collections/feature-specification.md
+
+
+  // sets
+
 
 
   for (int i = 0; i < 5; i++) {

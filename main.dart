@@ -93,7 +93,11 @@
 */
 
 // komentarz
-main() {
+// każdy program musi mieć main()
+// main zwraca void i może przyjmować opcjonalne List<String> z arumentami
+main(args) {
+  print("Args: $args");
+
   // zmienne
   var varName = 'Bob'; // wywnioskowany typ to String
   // tutaj celowo wymuszamy by zmienna mogła
@@ -322,6 +326,30 @@ main() {
     if (hidden) print("hidden enabled");
   }
   enableFlags(bold: true, hidden: false);
+
+  // pomiom że są to parametry opcjonalne, to można je opisać jako wymagane
+  // dużo bibliotek i frameworków tak robi
+  // Wydaje mi się jednak, że działa to tylko dla konstruktorów klas.
+  // Poniższe linjki mimo że zgodne z dokumentacją rzucają mi błędy,
+  // że getter nie został znaleziony.
+  //void foo({@required String path, @required String mode}) {
+  //  print('opening file $path whth mode $mode');
+  //}
+
+  // opcjonalne parametry pozycyjne []
+  void optionalPositionalParam(int i, [int b]) {
+    print('i: $i${(b == null ? "" : ", b: $b")}');
+  }
+  optionalPositionalParam(1);
+  optionalPositionalParam(1, 2);
+
+  // parametry z wartościami domyślnymi,
+  // ale tylko parametry opcjonalne {} lub [] mogą mieć wartości domyślne
+  void sayHi(String name, [String prefix = "Hi "]) {
+    print("$prefix $name");
+  }
+  sayHi("Arek");
+  sayHi("Arek", "Hello");
 
 
   for (int i = 0; i < 5; i++) {

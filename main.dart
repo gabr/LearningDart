@@ -121,6 +121,7 @@ main() {
   //final var finalNumberWithVar = 8; <-- tak nie można
   const constValue = 8 * 1.23;
   const double constDouble = 3.14;
+  //const nullValue; <-- tak nie można, nie można mieć nullowego consta
 
   // można też do niestałej zmiennej wrzucić stałą wartość, np:
   var variableWithConstantValue = const [];
@@ -168,6 +169,61 @@ main() {
   // strings
   // Dart obsługuje wszystkie napisy jako UTF-16
   // Napisy można tworzyć pojedynczym i podwójnym apostrofem
+  var s = 'string interpolation';
+  assert('Test $s' == 'Test ' + s);
+  assert('Test ${s.toUpperCase()}' == 'Test STRING INTERPOLATION');
+
+  // działa też z trzema """
+  const multilineString = '''
+  Bla bla
+  Tra la la
+  ''';
+  const secondMultilineString = """First line
+  second line""";
+
+  const rawString = r'In this string ${nothing} is i\n\te\rpreted';
+  print(rawString);
+  // manipulacja poszczególnymi znakami jest
+  // obsługiwana przez Runes opisane niżej
+
+  // więcej o manipulacji stringami:
+  // https://dart.dev/guides/libraries/library-tour#strings-and-regular-expressions
+
+
+  // booleans
+  // true/false
+  // nie można używać zwykłych wartości do sprawdzania prawda/fałsz tak jak
+  // w JavaScript if([]) nie zadziała, trzeba zrobić równanie do konkretnej
+  // wartości if([] == [])
+  const emptyString = '';
+  assert(emptyString.isEmpty);
+  const numberZero = 0;
+  assert(numberZero <= 0);
+  var nullValue;
+  assert(nullValue == null);
+  const nanValue = 0 / 0;
+  assert(nanValue.isNaN);
+
+  // lists
+  // nie ma rozróżnienia na tablice i listy, jest tylko jedna struktura List
+  var list = [1, 2, 3];
+  assert(list.length == 3);
+  assert(list[1] == 2); // zero based indexing
+  list[0] = 0;
+  assert(list[0] == 0);
+  // Dart ma operator trzech kropek ... pozwalający rozbijać listę i
+  // przekazywać wiele parametrów na raz, w ten sposób można łączyć np kilka
+  // list razem
+  final extendedList = [0, 1, 2, ...list];
+  assert(extendedList.length == 6);
+  // aby uniknąć potencjalnych błędów jeżeli rozwijana lista może być nullem
+  // można użyć operatora ...?
+  var nullList;
+  final nullExtendedList = [0, 1, 2, ...?nullList];
+  assert(nullExtendedList.length == 3);
+  // operatory trzech kropek nie są wspierane w zmiennych
+  // typu const, ale działają z final
+
 
 
   for (int i = 0; i < 5; i++) {

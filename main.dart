@@ -239,10 +239,18 @@ main() {
   ];
   assert(stringsList.length == 12);
 
-  // więce na: https://github.com/dart-lang/language/blob/master/accepted/2.3/control-flow-collections/feature-specification.md
+  // więcej na: https://github.com/dart-lang/language/blob/master/accepted/2.3/control-flow-collections/feature-specification.md
 
 
   // sets
+  // kolekcja unikatowych elementów bez określonej kolejności
+  final halogensSet = {'florine', 'chlorine', 'bromine', 'iodine', 'astatine'};
+  var emptySet = <String>{};
+  // Set<string> emptySet = {}; zadziała tak samo
+  // var thisIsNotASetButAMap = {}; to tworzy mapę/słownik a nie zbiór
+  // Niepodanie typu w powyższym stworzy typ Map<dynamic, dynamic>
+  emptySet.add('firstItem');
+  emptySet.addAll(halogensSet);
 
 
 

@@ -99,6 +99,42 @@ class A {
   void baz() {}
 }
 
+class Point {
+  num x;
+  num y;
+  num z = 0;
+
+  Point(num x, num y) {
+    this.x = x;
+    this.y = y;
+  }
+  // można krócej tak:
+  // Point(this.x, this.y);
+
+  // konstruktory nazwane
+  Point.origin() {
+    x = y = 0;
+  }
+
+  // lista inicjalizacyjna tak jak w C++
+  Point.fromJson(Map<String, num> json)
+    : assert(json != null),  // można tutaj używać assert
+      x = json['x'],
+      y = json['y'] { }
+
+  // jeden konstruktor może wywoływać inny
+  Point.onXAxis(num x) : this (x, 0);
+}
+
+class FourDPoint extends Point {
+  num t;
+
+  FourDPoint(num x, num y, num z, num t) : super(x, y) {
+    this.z = z;
+    this.t = t;
+  }
+}
+
 
 // komentarz
 // każdy program musi mieć main()
@@ -457,5 +493,31 @@ main(args) {
       print('unknown state');
   }
 
+  // wyjątki
+  // Dart ma obiekty Exception i Error
+  // throw może rzucać zwykłe stringi i inne typy ale powinien z reguły
+  // rzucać typ który implementuje Error (pewnie wtedy jest stack trace)
+  try {
+    throw FormatException('Expected at least 1 section');
+  } on FormatException {
+    print("Format error");
+  }
+  final doStuff = () => throw UnimplementedError();
+  try {
+    doStuff();
+  } on UnimplementedError catch (e, s) {
+    print("Wyjątek $e in $s");
+  } catch (e, s) {
+    print("Final catch to catch them all and print stack trace: $s");
+  } finally {
+    print("I'm always there");
+  }
+
+  print("The type is: ${"some text".runtimeType}");
+
+  final p1 = Point(1, 2)
+    ..z = 3;
+
+  print(p1);
 }
 

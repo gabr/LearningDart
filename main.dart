@@ -135,7 +135,7 @@ main(args) {
 
   // numbers
   // Dwa typy: int i double, oba dziedziczą po typie num, który definiuje
-  // podstawowe operacje takie jak +,-,/,*, abs(), ceil(0, floor(), ale takie
+  // podstawowe operacje takie jak +,-,/,*, abs(), ceil(), floor(), ale takie
   // operatory jak przesunięcia bitowe >> są tylko w int
   // Jeżeli typy liczbowe nie mają jakiejś funkcji matematycznej, to znajdzie
   // się ona pewnie w dart:math https://api.dart.dev/stable/dart-math
@@ -350,6 +350,19 @@ main(args) {
   }
   sayHi("Arek");
   sayHi("Arek", "Hello");
+
+  // kaskadowanie .. pozwala na wykonywanie wielu operacji na
+  // pojedynczym obiekcie
+  final sortedArrayWithAddedZero = [ 1, 3, -2, 3, 4]
+    ..sort()
+    ..add(0);
+  print(sortedArrayWithAddedZero);
+
+  // funckeje anonimowe (params) { body }
+  // podobne do arrow functions (params) => expression
+  ['apples', 'bananas', 'oranges'].forEach((fruit) {
+    print('eating $fruit');
+  });
 
 
   for (int i = 0; i < 5; i++) {

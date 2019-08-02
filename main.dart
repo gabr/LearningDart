@@ -1,4 +1,6 @@
 /*
+  Notatki z: https://dart.dev/guides/language/language-tour
+
   Ważne koncepcje:
 
   1. Wszystko jest obiektem, nawet int i null.  Zmienne przechowują tylko i
@@ -93,21 +95,80 @@
 // komentarz
 main() {
   // type infer
-  var number = 17;
-  printInteger(number);
+  var printIntegerNumber = 17;
+  printInteger(printIntegerNumber);
 
   // zmienne
-  var name = 'Bob'; // wywnioskowany typ to String
+  var varName = 'Bob'; // wywnioskowany typ to String
   // tutaj celowo wymuszamy by zmienna mogła
   // przechowywać więcej niż tylko Stringi:
-  dynamic dname = 'Bob';
-  String sname = 'Bob'; // ręczne ustawianie typu
+  dynamic dynamicName = 'Bob';
+  String stringName = 'Bob'; // ręczne ustawianie typu
 
   // domyślna wartość wszystkich zmiennych to null, nawet liczb
   int n;
   // żeby assert rzucał wyjątek trzeba go włączyć argumentem --enable-asserts
   // i ten argument musi być podany przed nazwą pliku
   assert(n == null);
+
+
+  // Różnica między final a const jest tak, że do final można zapisać
+  // wartość, ale tylko raz, a const jest stałą już w czasie kompilacji.
+  // final jest więc używany do przechowywania obiektów tworzonych za pomocą
+  // konstruktorów
+  final finalNumberWithoutTypedType = 7 + 1;
+  final int finalNumberWithExplicitlyTypedType = 8;
+  //final var finalNumberWithVar = 8; <-- tak nie można
+  const constValue = 8 * 1.23;
+  const double constDouble = 3.14;
+
+  // można też do niestałej zmiennej wrzucić stałą wartość, np:
+  var variableWithConstantValue = const [];
+  variableWithConstantValue = [1, 2, 3]; // ok, ta zmienna jest var
+  final finalVariableWithConstantValue = const [];
+  //finalVariableWithConstantValueA = [1, 2, 3]; // error, ta zmienna jest final
+  const constArray = []; // to samo co = const []
+
+  // wbudowane typy: numbers, strings, booleans, lists/arrays, sets,
+  //                 maps, runes (for unicode characters), symbols
+
+  // numbers
+  // Dwa typy: int i double, oba dziedziczą po typie num, który definiuje
+  // podstawowe operacje takie jak +,-,/,*, abs(), ceil(0, floor(), ale takie
+  // operatory jak przesunięcia bitowe >> są tylko w int
+  // Jeżeli typy liczbowe nie mają jakiejś funkcji matematycznej, to znajdzie
+  // się ona pewnie w dart:math https://api.dart.dev/stable/dart-math
+  var intNumber = 1;
+  var hexNumber = 0xDEADBE;
+  var doubleNumber = 1.1;
+  double forcedDouble = 1; // działa od Dart 2.1
+  var scientificNotation = 1.42e5;
+
+  // zamiana stringów na liczby i odwrotnie
+  var intFromString = int.parse('1');
+  assert(intFromString == 1);
+  var doubleFromString = double.parse('1.1');
+  assert(doubleFromString == 1.1);
+  var stringFromInt = 1.toString();
+  assert(stringFromInt == '1');
+  var stringFromDouble = 3.145245.toStringAsFixed(2);
+  assert(stringFromDouble == '3.15'); // zaokrąglenie
+
+  assert((3 << 1) == 6);
+  assert((3 >> 1) == 1);
+  assert((3 |  4) == 7);
+
+  // wartości które da się obliczyć w czasie kompilacji są stałymi obliczanymi
+  // w czasie kompilacji:
+  const msPerSecond = 1000;
+  const secondsUntilRetry = 5;
+  const msUntilRetry = secondsUntilRetry * msPerSecond;
+
+
+  // strings
+  // Dart obsługuje wszystkie napisy jako UTF-16
+  // Napisy można tworzyć pojedynczym i podwójnym apostrofem
+
 
   for (int i = 0; i < 5; i++) {
     print('hello ${i + 1}');

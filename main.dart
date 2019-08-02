@@ -94,10 +94,6 @@
 
 // komentarz
 main() {
-  // type infer
-  var printIntegerNumber = 17;
-  printInteger(printIntegerNumber);
-
   // zmienne
   var varName = 'Bob'; // wywnioskowany typ to String
   // tutaj celowo wymuszamy by zmienna mogła
@@ -251,18 +247,85 @@ main() {
   // Niepodanie typu w powyższym stworzy typ Map<dynamic, dynamic>
   emptySet.add('firstItem');
   emptySet.addAll(halogensSet);
+  assert(emptySet.length == halogensSet.length + 1);
+  const constSet = { 'a', 'b', 'c' };
 
+  // maps
+  const firstMap = {
+    'a': 1,
+    'b': 2,
+    'c': 3,
+  };
+  // słowo kluczowe 'new' jest opcjonalne
+  // nie trzeba więc pisać new Map()
+  final mapByConstructor = Map();
+  mapByConstructor['name'] = 'Bruce';
+  mapByConstructor['nick'] = 'Batman';
+  assert(mapByConstructor.length == 2);
+
+  // od Dart 2.3 mapy wspierają ... i ...?
+  final bigMap = { 'start': 0, ...firstMap };
+
+
+  // Runes
+  // określanie znaku unicode robimy poprzez \u0000 np \u2665
+  // aby wyciągnąć Runy ze stringu na można używać metod codeUnitAt(),
+  // codeUnit(), lub można użyć właściwości runes by dostać listę wszystkich
+  // Run w stringu
+  const clapping = '\u{1f44f}';
+  print(clapping);
+  print(clapping.codeUnits);
+  print(clapping.runes.toList());
+
+  final runes = Runes('\u2665 \u{1f605} \u{1f60e} \u{1f47b} \u{1f596} \u{1f44d}');
+  print(new String.fromCharCodes(runes));
+
+  // symbols
+  // symbol to takie globalne enumy, odpowiednik symboli z lispa
+  // warto go używać gdy się kompiluje do java scriptu bo tam podczas
+  // procesu mimifikacji nazwy zmiennych się zmieniają, ale wartości symboli
+  // już nie
+  var symbol = #firstSymbol;
+  assert(symbol == #firstSymbol);
+
+  // funkcje potrafią domyślić się swojego typu zwracanego
+  printInteger(int number) {
+    // both ' and " works
+    print('The number is $number.');
+    print("The number is $number.");
+    print("Expression ${1+number}");
+  }
+
+  var printIntegerNumber = 17;
+  printInteger(printIntegerNumber);
+
+  bool isEven(int number) {
+    return number % 2 == 0;
+  }
+
+  bool isOdd(int number) => number % 2 != 0;
+
+  final areEqual = (a) => (b) => a == b;
+  assert(areEqual(1)(1)     == true);
+  assert(areEqual(1)(2)     == false);
+  assert(areEqual(1.1)(1.1) == true);
+  assert(areEqual(1.1)(2.1) == false);
+
+  final isZero = areEqual(0);
+  assert(isZero(1 - 1) == true);
+  assert(isZero(1 - 2) == false);
+
+  // funkcje mogą mieć opcjonalne nazwane parametry poprzez zawarcie ich
+  // w nawiasach klamrowych
+  void enableFlags({bool bold, bool hidden}) {
+    if (bold)   print("bold enabled");
+    if (hidden) print("hidden enabled");
+  }
+  enableFlags(bold: true, hidden: false);
 
 
   for (int i = 0; i < 5; i++) {
     print('hello ${i + 1}');
   }
-}
-
-printInteger(int number) {
-  // both ' and " works
-  print('The number is $number.');
-  print("The number is $number.");
-  print("Expression ${1+number}");
 }
 
